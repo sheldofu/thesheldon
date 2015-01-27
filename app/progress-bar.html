@@ -1,0 +1,752 @@
+<html>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript" src="js/harvey.js"></script>
+
+    <link href='http://fonts.googleapis.com/css?family=Indie+Flower' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/skeleton.css">
+    <script>
+
+    var ProgressBar = (function(){
+
+    return {
+
+      amount: 3,
+      currentPoints: 18000,
+      maxWidth: 515,
+      targetOff: 0,
+      targetHolder:[0,100,10000,20000],
+      prizeHolder:[0,25,100,200],
+      highestTarget: 0,
+
+        init: function() {
+                this.bindUI();
+                this.replaceValues();
+                this.calculateBarWidth();
+                this.targetGlows();
+        },
+
+        bindUI: function() {
+          $('form').on("input","input",function(){
+            $('#error-messages').text("");
+            var meth = $(this).attr("name");
+            meth = meth.slice(-1);
+            if ($.isNumeric(meth)) {
+              var newTar = $(this).val();
+              if ((meth != ProgressBar.targetHolder.length) && (newTar > ProgressBar.targetHolder[+meth+1])) {
+                newTar = (ProgressBar.targetHolder[+meth+1])-1;  
+                $('#error-messages').text("Target " + meth + " can't be higher than target " + (+meth+1))      
+              }
+              ProgressBar.targetHolder[meth] = newTar;
+            }
+            else {
+              ProgressBar.currentPoints = $(this).val();
+            }
+              ProgressBar.replaceValues();
+              ProgressBar.calculateBarWidth();
+              ProgressBar.targetGlows();
+              ProgressBar.overlapDetection();
+          })
+
+          Harvey.attach('screen and (min-width: 960px)', {
+              on: ProgressBar.rescaleOne
+          });
+
+          Harvey.attach('screen and (min-width: 768px) and (max-width: 959px)', {
+              on: ProgressBar.rescaleTwo
+          });
+
+          Harvey.attach('screen and (min-width: 480px) and (max-width: 767px)', {
+              on: ProgressBar.rescaleThree
+          });
+         
+          Harvey.attach('screen and (max-width: 479px)', {
+              on: ProgressBar.rescaleFour
+          });          
+        },
+
+        rescaleOne:function() {
+         ProgressBar.maxWidth = 515;
+         ProgressBar.targetOff = 13;
+         ProgressBar.calculateBarWidth();
+        },
+        rescaleTwo:function() {
+         ProgressBar.maxWidth = 410;
+         ProgressBar.targetOff = 15;
+         ProgressBar.calculateBarWidth();
+        },
+        rescaleThree:function() {
+         ProgressBar.maxWidth = 330;
+         ProgressBar.targetOff = 20;
+         ProgressBar.calculateBarWidth();
+        },
+        rescaleFour:function() {
+         ProgressBar.targetOff = 25;
+         ProgressBar.maxWidth = 240;
+         ProgressBar.calculateBarWidth();
+        },
+        replaceValues: function() {
+          for (i=1;i<this.targetHolder.length;i++){
+            $("#target"+[i]).html("T "+[i]+"<br>" + this.targetHolder[i]);
+            $('#prize' + [i]).html(this.prizeHolder[i]);
+          }
+        },
+
+
+        calculateBarWidth: function() {
+
+          for (i=1;i<this.targetHolder.length;i++){
+            if (this.targetHolder[i] > this.highestTarget) {
+              this.highestTarget = this.targetHolder[i];
+            }
+          }
+
+          for (i=1;i<this.targetHolder.length;i++){
+            var targetPos = (this.targetHolder[i] / this.highestTarget) * this.maxWidth;
+            $('#target' + [i]).css("left",targetPos);
+            $('#target' + [i] + 'Line').css("left",targetPos);
+            $('#prize' + [i]).css("left", (targetPos - this.targetOff) + "px");
+          }
+
+          var barLength = this.currentPoints / this.highestTarget * this.maxWidth;          
+          var barOffset = this.maxWidth - barLength;
+
+          $("#progCover").width(barOffset + "px");
+        
+        },
+
+
+
+        targetGlows: function() {
+      
+          for (i=1;i<this.targetHolder.length;i++){
+            if (this.currentPoints >= this.targetHolder[i]) {
+               $('#prize' + [i]).removeClass("inactiveText").addClass("glowText");
+            } else {
+               $('#prize' + [i]).removeClass("glowText").addClass("inactiveText");
+            }
+          }
+
+          if (Number(this.currentPoints) >= Number(this.highestTarget)) {
+            $('#progBar').css("background","url(img/bar_red.png)");
+            
+          for (i=1;i<this.prizeHolder.length;i++){
+            $('#prize' + [i]).removeClass("inactiveText").addClass("glowTextRed");
+          }
+
+          } else {
+               $('#progBar').css("background","url(img/bar.png)");
+               for (i=1;i<this.prizeHolder.length;i++){
+                  $('#prize' + [i]).removeClass("glowTextRed");
+               }
+          }
+
+          this.highestTarget = 0;
+        },
+
+        overlapDetection: function() {
+          for (i=1;i<this.targetHolder.length;i++){
+            
+            var collisionA = $('#target' + [i]).position().left + $('#target' + [i]).width();
+            var collisionB = 0;
+            if (i != (this.targetHolder.length - 1)) {
+              collisionB = $('#target' + [i+1]).position().left;
+            }
+
+            if ((collisionA > collisionB) && (i != (this.targetHolder.length - 1))) {
+              $('#target' + [i+1]).css("top","50px");
+              $('#target' + [i+1] + "Line").css("height","32px");
+            }
+            else if ((collisionB > collisionA) && (i != (this.targetHolder.length - 1))) {
+              $('#target' + [i+1]).css("top","auto");
+              $('#target' + [i+1] + "Line").css("height","75px");
+            }
+          }
+        }
+        
+    }  
+    })();   
+
+  
+$(document).ready(function(){
+  
+  ProgressBar.init();
+  ProgressBar.overlapDetection();
+
+  window.onorientationchange = function(){
+
+      var orientation = window.orientation;
+
+      // Look at the value of window.orientation:
+      if (orientation === 0){
+        ProgressBar.rescaleTwo();
+          // iPad is in Portrait mode.
+      }
+      else if (orientation === 90){
+        ProgressBar.rescaleOne();
+          // iPad is in Landscape mode. The screen is turned to the left.
+      }
+      else if (orientation === -90){
+        ProgressBar.rescaleOne();
+          // iPad is in Landscape mode. The screen is turned to the right.
+      }
+  }
+});
+
+
+</script>
+
+<style>
+
+    .tarRow label, .tarRow input {
+      width: 108px;
+    }
+
+    .tarRow label {
+      text-align: right;
+      padding-right: 12px;
+    }
+
+    form {
+      color:white;
+      text-align: left;
+    }
+
+    #fix1 {
+      margin-left: 4px;
+    }
+
+    #fix2 {
+      margin-left: 4px;
+    }
+
+    #error-messages{
+      color:red;
+    }
+
+    .form-holder {
+      padding:10px;
+      text-align: center;
+    }
+
+    label {
+        display: inline-block;
+        margin: 0px 0px 5px;
+        font-family: Indie Flower;
+    }
+    label>span {
+        float: left;
+        width: 20%;
+        text-align: right;
+        padding-right: 10px;
+        margin-top: 10px;
+        font-weight: bold;
+    }
+    input[type="text"], input[type="email"], textarea, select {
+        border: none;
+        color: #525252;
+        height: 25px;
+        line-height:15px;
+        margin-bottom: 16px;
+        margin-right: 6px;
+        margin-top: 2px;
+        outline: 0 none;
+        padding: 5px 0px 5px 5px;
+        border-radius: 2px;
+        -webkit-border-radius: 2px;
+        -moz-border-radius: 2px;
+        -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        background: #DFDFDF;
+        display: inline-block;
+    }
+    select {
+        background: #DFDFDF url('down-arrow.png') no-repeat right;
+        background: #DFDFDF url('down-arrow.png') no-repeat right;
+        appearance:none;
+        -webkit-appearance:none; 
+        -moz-appearance: none;
+        text-indent: 0.01px;
+        text-overflow: '';
+        width: 70%;
+        height: 35px;
+        color: #525252;
+        line-height: 25px;
+    }
+    textarea{
+        height:100px;
+        padding: 5px 0px 0px 5px;
+        width: 70%;
+    }
+    button {
+        background: #FFCC02;
+        border: none;
+        padding: 10px 25px 10px 25px;
+        color: #585858;
+        border-radius: 4px;
+        -moz-border-radius: 4px;
+        -webkit-border-radius: 4px;
+        text-shadow: 1px 1px 1px #FFE477;
+        font-weight: bold;
+        box-shadow: 1px 1px 1px #3D3D3D;
+        -webkit-box-shadow:1px 1px 1px #3D3D3D;
+        -moz-box-shadow:1px 1px 1px #3D3D3D;
+    }
+
+    button:hover {
+        color: #333;
+        background-color: #EBEBEB;
+    }
+
+    p {
+      margin:0;
+    }
+    body {
+      margin-top:0px
+    }
+
+    .welcome_box {
+      background: #454444 !important;
+    }
+
+    .mobile-only {
+      display:none;
+    }
+
+    .target{
+      font-size: 20px;
+    }
+    /* Desktop and all devices */
+
+     .glowText.glowTextRed{
+        color: red;
+        text-shadow: -2px 2px 3px #000000;
+        background: none;
+      }
+
+
+      .glowText{
+        color: #079DD1;
+        text-shadow: -2px 2px 3px #000000;
+
+        background: -moz-radial-gradient(center, ellipse cover, rgba(30,87,153,1) 0%, rgba(31,111,185,0) 66%, rgba(32,124,202,0) 100%); /* FF3.6+ */
+        background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(30,87,153,1)), color-stop(66%,rgba(31,111,185,0)), color-stop(100%,rgba(32,124,202,0))); /* Chrome,Safari4+ */
+        background: -webkit-radial-gradient(center, ellipse cover, rgba(30,87,153,1) 0%,rgba(31,111,185,0) 66%,rgba(32,124,202,0) 100%); /* Chrome10+,Safari5.1+ */
+        background: -o-radial-gradient(center, ellipse cover, rgba(30,87,153,1) 0%,rgba(31,111,185,0) 66%,rgba(32,124,202,0) 100%); /* Opera 12+ */
+        background: -ms-radial-gradient(center, ellipse cover, rgba(30,87,153,1) 0%,rgba(31,111,185,0) 66%,rgba(32,124,202,0) 100%); /* IE10+ */
+        background: radial-gradient(ellipse at center, rgba(30,87,153,1) 0%,rgba(31,111,185,0) 66%,rgba(32,124,202,0) 100%); /* W3C */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#00207cca',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+      }
+
+      .inactiveText{
+        color: #525252;
+        text-shadow: -2px 2px 3px #000000;    
+      }
+
+
+      .behave {
+        display:inline-block;
+        text-align: center;
+        font-size: 36px;
+        font-family: Indie Flower;
+      }
+
+      .banner h2 {
+      padding-top: 0.2em;
+      }
+
+      h2{
+            font-family: Indie Flower;
+      font-size: 28px;
+      color: white;
+      }
+      .one-third p {
+        color:white;
+        padding-bottom: 0.3em;
+      }
+      
+      .full-width-container, .text-box {
+        background: #000;
+      }
+
+      .main section h3 {
+        font-size: 22px;
+      }
+
+      .main section p{
+        font-size: 16px;
+        padding: 0 10px 0 10px;
+      }
+
+      .one-third .btn.arrows {
+        padding-right: 44px;
+      }
+
+      .black-box{
+        background: #000;
+      }
+
+      .welcome_box  {
+        margin-right: 4px !important;
+        height:  348px !important;
+      }
+
+      .week {
+        min-width: 95px;
+      }
+
+        #leftPane {
+          float:left;
+        }
+        #rightPane {
+          background: url(img/backg.png);
+          height:348px;
+        }
+        #progBar {
+          margin-top: 120px;
+          background: url(img/bar.png);
+          width:570px;
+          height:90px;
+        }
+        #progCover {
+          float: right;
+          position: relative;
+          right: 21px;
+          top: 29px;
+          width: 515px;
+          height: 26px;
+          background-color: #121212;
+          border-top-right-radius: 13px;
+          border-bottom-right-radius: 13px;
+         }
+
+         .barul {
+          color:white;
+          list-style-type: none;
+          padding: 0px;
+          margin: 0px;
+          position: relative;
+          left: 30px;
+          top: -60px;
+         }
+
+         .barul2 {
+          color:white;
+          padding: 0px;
+          margin: 0px;
+          position: relative;
+          left: 30px;
+          top: 0px;
+          font-size: 26px;
+         }
+
+         .barul2 div {
+          position: absolute;
+         }
+
+         .barul li {
+          display:inline-block;
+          background-image:url("img/limarker.png");
+          background-repeat: no-repeat;
+          background-position: 0px 5px; 
+          padding-left: 14px; 
+          font-family:'Indie Flower';
+         }
+
+         .target{
+          position:absolute;
+         }
+
+         .target-line{
+          position: absolute;
+          bottom: -28px;
+          height: 75px;
+          width: 2px;
+          margin-left:33px;
+          background-color:white;          
+         }
+
+         .relative {
+          position: relative;
+         }
+
+      /* Small Desktop/Devices and iPad Landscape */
+      @media only screen and (max-width: 959px) {
+
+        .tarRow label, .tarRow input {
+          width: 88px;
+        }
+        #progBar{
+          margin-top: 120px;
+          width: 508px;
+          height: 90px;
+          background-size: 92% !important;
+          background-repeat: no-repeat !important;
+        }
+
+          #progCover {
+          float: right;
+          position: relative;
+          right: 67px;
+          top: 25px;
+          width: 415px;
+          height: 20px;
+          background-color: #121212;
+          }
+
+         .barul {
+          left: 24px;
+          top: -63px;
+         }
+
+         .target-line {
+          bottom: -20px;
+          height: 75px;
+          margin-left: 27px;
+         }
+
+        .welcome_box {
+          /*width: 99.5% !important;*/
+          max-width: 99.5% !important;
+        }
+
+        #rightPane {
+            height:368px;
+        }
+
+        .welcome_box  {
+          height:  368px !important;
+        }
+
+        .mobile-only {
+        display:none;
+        }
+
+        .welcome_box  {
+          margin-right: 4px !important;
+          /*min-height: 273px !important;*/
+        }
+
+      }
+
+      /* All mobile - Landscape & Portrait */ /* iPad Portrait */
+      @media only screen and (max-width: 959px) {
+       .mobile-only {
+          display:none;
+        }
+        #rightPane {
+            height:368px;
+        }        
+      }
+
+      /* Mobile Landscape */
+      @media only screen and (min-width: 480px) and (max-width: 767px) {
+         .barul {
+          left: 19px;
+          top:-68px;
+         }
+
+          #rightPane {
+            height: 280px;
+         }
+
+         .tarRow label, .tarRow input {
+           width:150px;
+         }
+
+         .target {
+          font-size:16px;
+         }
+
+         .target-line {
+          bottom: -20px;
+          height: 75px;
+          margin-left: 22px;
+         }
+
+        #progBar{
+          margin-top: 120px;
+          width: 375px;
+          height: 90px;
+          background-size: 100% !important;
+          background-repeat: no-repeat !important;
+        }
+
+        #progCover {
+          float: right;
+          position: relative;
+          right: 20px;
+          top: 21px;
+          width: 415px;
+          height: 14px;
+          background-color: #121212;;
+        }
+
+        .welcome_box {
+          height:250px !important;
+        }
+
+        .mobile-only {
+        display:block;
+        margin-bottom:5px;
+        }      
+      }
+
+      /* Mobile Portrait */
+      @media only screen and (max-width: 479px) {
+
+       .barul {
+        left: 13px;
+        top:-70px;
+       }
+       .barul li {
+        padding-left:7px;
+       }
+       .target{
+        font-size:16px;
+       }
+
+       .target-line {
+        bottom: -12px;
+        height: 75px;
+        margin-left: 16px;
+       }
+
+      #progBar{
+        margin-top: 120px;
+        width: 270px;
+        height: 90px;
+        background-size: 100% !important;
+        background-repeat: no-repeat !important;
+      }
+
+      #progCover {
+        float: right;
+        position: relative;
+        height: 11px;
+        position: relative;
+        right: 15px;
+        top: 15px;
+        background-color: #121212;;
+      }
+
+      .banner-background {
+        background-position: -422px !important;
+        height: 200px;
+        background-size: 243% !important;
+      }
+
+      .mobile-only {
+      display:block;
+      margin-bottom:5px;
+      }
+
+      #logo-mobile{
+      display:block;
+      }
+
+      #logo-desktop{
+      display:none;
+      }
+
+
+      table {
+      padding: 0 !important;
+      }
+
+      .expired-y .footers {
+      height: 168px !important;
+      }
+
+      .one-third .btn-large {
+      font-size: 22px !important;
+      }
+
+      .welcome_box {
+
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+      }   
+
+      .welcome_box {
+        height:250px !important;
+      }
+
+      #rightPane {
+        height: 280px;
+      }
+    }
+</style>
+    <div>
+      <div class="container main">
+        <section>
+          <div class="one-third column alpha text-box margin-bottom-small welcome_box">
+                  <div class="form-holder">
+                  <p>
+                  <h2>Change the bar</h2>
+                    <form>
+<!--                     <label>New Target</label><input id="target-input" type="text" name="input-target">
+                    <label>New Prize</label><input id="prize-input" type="text" name="input-prize"><br/>
+                    <button name="newTarget">Add New Target</button> -->
+
+                      <div class="tarRow">
+                       <label>Target 1</label><input value="100" id="fix1" type="text" name="target1">
+                      </div>
+                      <div class="tarRow">
+                        <label>Target 2</label><input value="10000" id="fix2" type="text" name="target2">
+                      </div>
+                      <div class="tarRow">
+                        <label>Target 3</label> <input value="20000" type="text" name="target3">
+                      </div>
+                      <div class="tarRow">
+                        <label>Current Points</label> <input value="18000" type="text" name="currentPoints">
+                      </div>
+                    </form>
+                    <p id="error-messages"></p>
+                  </p>
+                  </div>
+                
+                </div>
+                <div class="two-thirds column omega" id="rightPane">
+               <div id="barScaler">
+                <div class="relative">
+                  <div id="target1Line" class="target-line"></div>
+                  <div id="target2Line" class="target-line"></div>
+                  <div id="target3Line" class="target-line"></div>
+                </div>
+                <ul class="barul">
+                  <li id="target1" class="target"></li>
+                  <li id="target2" class="target"></li>
+                  <li id="target3" class="target"></li>
+                </ul>
+                <div id="progBar">
+              <div id="progCover"></div>
+                </div>
+                </div>
+                <div class="barul2">
+                  <div id="prize1" class="inactiveText behave"></div>
+                  <div id="prize2" class="inactiveText behave"></div>
+                  <div id="prize3" class="inactiveText behave"></div>
+                </div>
+              </div>                
+        </section>
+      </div>  
+    </div>
+
+
+    <!-- Javascript
+    ================================================== -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js" type="text/javascript"></script>
+
+
+        
+</html>
