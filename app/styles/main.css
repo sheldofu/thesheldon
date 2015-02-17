@@ -12,7 +12,7 @@ body {
 }
 
 .container {
-    width: 100%;
+    width: 80%;
     margin-left: auto;
     margin-right: auto;
 }
@@ -21,6 +21,8 @@ body {
   clear:both;
 }
 
+/* Nav Styling */
+
 ul.nav {
     font-size: 14px;
     text-transform: uppercase;
@@ -28,14 +30,14 @@ ul.nav {
 }
 
  ul.nav li a {
-    padding: 25px 20px 0 20px;
+    padding: 25px 20px 5px 25px;
     display: block;
 }
 
 ul.nav li.current-page a {
     background: none repeat scroll 0 0 #f8f8f8;
     border-top: 5px solid #9d426b;
-    padding: 20px 20px 5px;
+    padding: 20px 20px 5px 20px;
 }
 
 .nav {
@@ -62,8 +64,49 @@ ul.nav i {
   float: left;
 }
 
+ul.nav li a:hover {
+    background: #9d426b;
+    color: #fff;
+}
 
+ul.nav li a:hover i {
+    color: #fff;
+}
 
+/* Page Title Styling */
+
+.page-title {
+    background: url("../img/pattern.jpg") repeat scroll left top #f8f8f8;
+    box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.05) inset, 0 -5px 15px 0 rgba(0, 0, 0, 0.05) inset;
+    margin: 20px auto;
+    padding: 10px 0 10px;
+    text-align: left;
+}
+
+.page-title h2 {
+    color: #5d5d5d;
+    display: inline;
+    font-family: "Lobster",cursive;
+    font-size: 24px;
+    margin-left: 10px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+    vertical-align: middle;
+}
+
+.page-title p {
+    display: inline;
+    font-size: 14px;
+    font-style: italic;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+.page-title-icon {
+    color: #ccc;
+    font-size: 46px;
+    margin-left: 20px;
+    vertical-align: middle;
+}
 
 /* Link Styling */
 
@@ -85,4 +128,286 @@ a:link {
 a:active {
   text-decoration: none;
   color: #888;
+}
+
+/*Portfolio Styling*/
+
+.portfolio .work {
+  background: none repeat scroll 0 0 #f8f8f8;
+  border-bottom: 2px solid #9d426b;
+  margin: 40px 20px 0 20px;
+  padding-bottom: 20px;
+}
+
+.portfolio img {
+  width: 100%;
+}
+
+.item {
+  width: 220px;
+  list-style: outside none none;
+}
+
+
+
+
+
+
+
+
+/*Jackpot Styling*/
+
+.letter{
+    width: 70px;
+    height: 100px;
+    background: url('../images/reel.png');
+    display: inline-block;
+    background-position: 0 0px;
+    -moz-background-position: 0 0px;
+    transition: background-position 4s ease;
+}
+
+.space {
+    width: 70px;
+    height: 100px;
+    display: inline-block;
+}
+
+#letter1 {
+    background-position: 0 900px;
+}
+#letter2 {
+    background-position: 0 1050px;
+}
+#letter3 {
+    background-position: 0 300px;
+}
+#letter4 {
+    background-position: 0 300px;
+}
+#letter5 {
+    background-position: 0 900px;
+}
+#letter6 {
+    background-position: 0 900px;
+}
+#letter7 {
+    background-position: 0 900px;
+}
+#letter8 {
+    background-position: 0 1200px;
+}
+#letter9 {
+    background-position: 0 150px;
+}
+#letter10 {
+    background-position: 0 900px;
+}
+#letter11 {
+    background-position: 0 1350px;
+}
+#letter12 {
+    background-position: 0 900px;
+}
+
+
+
+/* CONTACT PAGE */
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.contact-us {
+    margin-top: 20px;
+    padding-bottom: 50px;
+    text-align: left;
+}
+
+.contact-us h4 {
+    margin-top: 25px;
+    padding: 0 20px;
+    font-family: 'Droid Sans', Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    color: #5d5d5d;
+    text-transform: uppercase;
+    text-shadow: 0 1px 0 rgba(255,255,255,.7);
+}
+
+.contact-us p {
+    padding: 0 20px;
+    line-height: 28px;
+    font-size: 13px;
+}
+
+.contact-form {
+    padding: 10px 0;
+    width: 680px;
+}
+
+.contact-form p {
+    margin-top: 15px;
+}
+
+.contact-us form {
+    margin-top: 25px;
+    padding: 0 20px;
+}
+
+.contact-us form input, .contact-us form textarea {
+    width: 90%;
+    height: 24px;
+    border: 1px solid #ddd;
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+    color: #888;
+    font-size: 13px;
+    font-style: italic;
+}
+
+.contact-us form input:focus, .contact-us form textarea:focus {
+    border: 1px solid #bbb;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.contact-us form textarea {
+    height: 160px;
+}
+
+.contact-us form button {
+    width: 120px;
+    height: 30px;
+    margin-top: 15px;
+    background: #9d426b;
+    border: 0;
+    font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    color: #fff;
+    -moz-box-shadow:
+        0 1px 25px 0 rgba(0,0,0,.05) inset,
+        0 -1px 25px 0 rgba(0,0,0,.05) inset;
+    -webkit-box-shadow:
+        0 1px 25px 0 rgba(0,0,0,.05) inset,
+        0 -1px 25px 0 rgba(0,0,0,.05) inset;
+    box-shadow:
+        0 1px 25px 0 rgba(0,0,0,.05) inset,
+        0 -1px 25px 0 rgba(0,0,0,.05) inset;
+    -o-transition: all .3s;
+    -moz-transition: all .3s;
+    -webkit-transition: all .3s;
+    -ms-transition: all .3s;
+}
+
+.contact-us form button:hover {
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.contact-us form button:active {
+    -moz-box-shadow:
+        0 5px 10px 0 rgba(0,0,0,.15) inset,
+        0 -1px 25px 0 rgba(0,0,0,.05) inset;
+    -webkit-box-shadow:
+        0 5px 10px 0 rgba(0,0,0,.15) inset,
+        0 -1px 25px 0 rgba(0,0,0,.05) inset;
+    box-shadow:
+        0 5px 10px 0 rgba(0,0,0,.15) inset,
+        0 -1px 25px 0 rgba(0,0,0,.05) inset;
+}
+
+.contact-us form label {
+    margin-top: 10px;
+    font-size: 13px;
+}
+
+.contact-us form input:-moz-placeholder, .contact-us form textarea:-moz-placeholder { color: #ccc; }
+.contact-us form input:-ms-input-placeholder, .contact-us form textarea:-ms-input-placeholder { color: #ccc; }
+.contact-us form input::-webkit-input-placeholder, .contact-us form textarea::-webkit-input-placeholder { color: #ccc; }
+ 
+
+
+/* About me page */
+
+
+.what-we-do .service {
+  padding-bottom: 23px;
+  background: #f8f8f8;
+  border-bottom: 2px solid #9d426b;
+}
+
+.what-we-do .service .icon-awesome {
+  margin-top: 15px;
+  font-size: 50px;
+  line-height: 50px;
+  color: #5d5d5d;
+}
+
+.what-we-do .service h4 {
+  margin-top: 5px;
+  font-family: 'Droid Sans', Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: #5d5d5d;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 rgba(255,255,255,.7);
+}
+
+.what-we-do .service p {
+  padding-bottom: 10px;
+  line-height: 24px;
+}
+
+.skill {
+  width: 220px;
+  height:250px;
+  float: left;
+  margin-left: 20px;
+}
+
+
+
+
+/* Not wide enough? Less fun for you. */
+
+@media (max-width: 550px) {
+
+.jackpot {
+    display:none;
+}
+
+}
+
+@media (max-width: 400px) {
+   
+   .navbar li {
+      float: none;
+   }
+
+   .navbar {
+      width: 100%;
+      float: none;
+      position: relative;
+      left: -15px;
+   }
+
+   ul.nav li a {
+      padding: 0;
+  }
+
+  ul.nav li.current-page a {
+      padding: 0;
+  }
+
+  .header {
+      height: 260px;
+  }
+
 }
