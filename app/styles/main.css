@@ -12,7 +12,7 @@ body {
 }
 
 .container {
-    width: 90%;
+    width: 95%;
     margin-left: auto;
     margin-right: auto;
 }
@@ -164,6 +164,25 @@ a:active {
 
 
 /*Jackpot Styling*/
+
+.jackpot {
+    margin-top: 40px;
+}
+
+.presentation h2 {
+    color: #5d5d5d;
+    font-family: "Lobster",cursive;
+    font-size: 30px;
+} 
+
+.presentation p {
+    font-size: 18px;
+    font-style: italic;
+}
+
+.violet {
+    color: #9d426b;
+}
 
 .letter{
     width: 70px;
@@ -345,6 +364,12 @@ label {
 
 /* About me page */
 
+.services-full-width-text p {
+    font-size: 13px;
+    line-height: 28px;
+    padding: 10px 20px;
+    text-align: left;
+}
 
 .what-we-do .service {
   padding-bottom: 23px;
@@ -378,6 +403,7 @@ label {
   height:250px;
   float: left;
   margin-left: 20px;
+  margin-bottom: 10px;
 }
 
 

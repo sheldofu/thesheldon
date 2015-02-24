@@ -199,13 +199,15 @@
         <script src="scripts/jquery.min.js"></script> 
         <script src="scripts/isotope.pkgd.min.js"></script>     
         <script>
-        var $container = $('.portfolio');
-        // init
-        $container.isotope({
-          // options
-          itemSelector: '.item',
-          layoutMode: 'masonry'
-        });
+        $(document).ready(function(){
+            var $container = $('.portfolio');
+            // init
+            $container.isotope({
+              // options
+              itemSelector: '.item',
+              layoutMode: 'masonry'
+            });
+        })
         </script>
     </body>
 
