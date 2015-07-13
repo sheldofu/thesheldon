@@ -76,26 +76,26 @@
                         <div class="left-2">
                             <div class="item">
                                 <div class="work">
+                                    <a class="sheldoverlay" data-sheldoverlay="mean">
+                                        <img src="images/mean.jpg" alt="">
+                                    </a>
+                                    <h4>MEAN Stack 'CMS'</h4>
+                                    <p>My current project, I'm building a very simple CMS so that friends can update their own websites. I'm using the MEAN stack, Mongodb holding the posts, The API being provided by Node + Express, and Angular on the front end. Still in progress so link is to github project until the authentication is fully implemented.</p>
+                                        <a class="sheldoverlay" data-sheldoverlay="mean">
+                                            <br>More information >></a><br>
+                                            <a href="https://github.com/sheldofu/blogapi" target="_blank">Link >></a></p>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="work">
                                     <a class="sheldoverlay" data-sheldoverlay="talkboard">
                                         <img src="images/talkboard_thumb.png" alt="">
                                     </a>
                                     <h4>Talkboard</h4>
-                                    <p>EXPERIMENTAL! My current project. Using a speech recongition API only supported in the latest versions of Google Chrome, Talkboard enables you sketch pictures with your voice...sometimes.</p>
+                                    <p>Playing around with a speech recongition API only supported in the latest versions of Google Chrome, Talkboard enables you sketch pictures with your voice...when it feels like it.</p>
                                         <a class="sheldoverlay" data-sheldoverlay="talkboard">
                                             <br>More information >></a><br>
                                             <a href="http://www.the-sheldon.com/speech_game/index.html" target="_blank">Link >></a></p>
-                                </div>
-                            </div>
-                             <div class="item">
-                                <div class="work">
-                                   <a class="sheldoverlay" data-sheldoverlay="bar">
-                                        <img src="images/portbar_thumb.png" alt="">
-                                    </a>
-                                    <h4>Progress Prize Bar</h4>
-                                    <p>Responsive progress bar made in HTML5 and Skeleton, uses harvey.js to attach events to media queries</p>
-                                    <a class="sheldoverlay" data-sheldoverlay="bar">
-                                            <br>More information >></a><br>
-                                            <a href="http://www.the-sheldon.com/progress-bar.html" target="_blank">Link >></a></p>
                                 </div>
                             </div>
                         </div>
@@ -163,6 +163,7 @@
                             </div>                                     
                         </div>
                         <div class="right-3">
+
                             <div class="item">
                                 <div class="work">
                                     <a class="sheldoverlay" data-sheldoverlay="midwife">
@@ -175,11 +176,33 @@
                                             <a href="http://www.midwiferebecca.com" target="_blank">Link >></a></p>
                                 </div>
                             </div>
+
+<!--                              <div class="item">
+                                <div class="work">
+                                   <a class="sheldoverlay" data-sheldoverlay="bar">
+                                        <img src="images/portbar_thumb.png" alt="">
+                                    </a>
+                                    <h4>Progress Prize Bar</h4>
+                                    <p>Responsive progress bar made in HTML5 and Skeleton, uses harvey.js to attach events to media queries</p>
+                                    <a class="sheldoverlay" data-sheldoverlay="bar">
+                                            <br>More information >></a><br>
+                                            <a href="http://www.the-sheldon.com/progress-bar.html" target="_blank">Link >></a></p>
+                                </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
         </div>
 
+
+        <div class="overlay" id="mean">
+            <div class="inner-overlay">
+                <img src="images/mean.jpg" width="100%">
+                <h2>MEAN Stack CMS</h2>
+                <h3>What is it?</h3>
+                <p>My current project, I'm building a very simple CMS so that friends can update their own websites. I'm using the MEAN stack, Mongodb holding the posts, The API being provided by Node + Express, and Angular on the front end. Still in progress so link is to github project until the authentication is fully implemented.</p>
+            </div>
+        </div>
         <div class="overlay" id="talkboard">
             <div class="inner-overlay">
                 <img src="images/talkboard.png" width="100%">
@@ -246,7 +269,8 @@
         <script src="scripts/jquery.min.js"></script> 
         <script src="scripts/isotope.pkgd.min.js"></script>     
         <script>
-        $(document).ready(function(){
+        var overlays = {};
+        overlays.init = function(){
             var $container = $('.portfolio');
             // init
             $container.isotope({
@@ -264,6 +288,14 @@
             $('.overlay').click(function(){
                 $(this).hide();
             })
+        }
+
+        $(document).ready(function(){
+            overlays.init();          
+        })
+
+        $(window).load(function(){
+            overlays.init();
         })
         </script>
 

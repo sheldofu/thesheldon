@@ -34,8 +34,7 @@
 
     <body>
 
-
-        <!-- Header -->
+      <!-- Header -->
         <div class="container">
             <div class="header row">
                     <div class="navbar">
@@ -46,10 +45,10 @@
                                     <li>
                                         <a href="portfolio.html"><i class="icon-camera"></i><br />Portfolio</a>
                                     </li>
-                                    <li>
+                                    <li class="current-page">
                                         <a href="services.html"><i class="icon-user"></i><br />About</a>
                                     </li>
-                                    <li class="current-page">
+                                    <li>
                                         <a href="contact.html"><i class="icon-envelope-alt"></i><br />Contact</a>
                                     </li>
                                 </ul>
@@ -62,49 +61,50 @@
             <div class="container">
                 <div class="row">
                     <div class="span12">
-                        <i class="icon-envelope-alt page-title-icon"></i>
-                        <h2>Contact Me /</h2>
-                        <p>My contact details</p>
+                        <i class="icon-tasks page-title-icon"></i>
+                        <h2>About Me /</h2>
+                        <p>My Skills and Experience</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Contact Us -->
-        <div class="contact-us container">
+        <!-- Services Full Width Text -->
+        <div class="services-full-width container">
             <div class="row">
-                <div class="contact-form">
-                    <p>Questions? Work? Please use the below form and get in touch.</p>
-                    <form method="post" action="sendmail.php">
-                        <label for="name" class="nameLabel">Name</label>
-                          <input id="name" type="text" name="name" placeholder="Enter your name...">
-                        <label for="email" class="emailLabel">Email</label>
-                          <input id="email" type="text" name="email" placeholder="Enter your email...">
-                        <label for="subject">Subject</label>
-                          <input id="subject" type="text" name="subject" placeholder="Your subject...">
-                        <label for="message" class="messageLabel">Message</label>
-                          <textarea id="message" name="message" placeholder="Your message..."></textarea>
-                        <button type="submit">Send</button>
-                    </form>
+                <div class="services-full-width-text span12" id="blog-content"><br>
+
                 </div>
             </div>
         </div>
 
+
+        <!-- Javascript -->
         <script src="scripts/jquery.min.js"></script> 
-        <script src="scripts/isotope.pkgd.min.js"></script> 
-        <script src="scripts/contact.js"></script> 
-        
+
         <script>
-        var $container = $('.portfolio');
-        // init
-        $container.isotope({
-          // options
-          itemSelector: '.item',
-          layoutMode: 'fitRows'
-        });
+            $(document).ready(function(){
+                $.ajax({
+                  url: "https://blogapi.herokuapp.com/blog/all",
+                  cache: false
+                })
+                  .done(function( posts ) {
+                    console.log(posts);
+
+                    for (i = 0; i < posts.length; i++ ) {
+                        var title = "<div><h2 style='color:black'>" + posts[i].title + "</h2>";
+                        var image = "<img width='300' height='200' style='float:left;padding:5px;' src='https://blogapi.herokuapp.com/" + posts[i].imgpath + "'>";
+                        var body = "<p style='color:black'>" + posts[i].body + "</p></div><br style='clear:both'>";
+                        var aPost = title + image + body;
+                        console.log(aPost);
+                        $('#contactPage').append(aPost)
+                    }
+
+                    // $('#contactPage').html(posts[2].body);
+                  });   
+            })
         </script>
 
     </body>
 
 </html>
-
