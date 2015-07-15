@@ -1,0 +1,48 @@
+
+      <!-- Header -->
+        <div class="container">
+            <div class="header row">
+                    <div class="navbar">
+                                <ul class="nav pull-right">
+                                    <li>
+                                        <a href="index.html"><i class="icon-home"></i><br />Home</a>
+                                    </li>
+                                    <li>
+                                        <a href="portfolio.html"><i class="icon-camera"></i><br />Portfolio</a>
+                                    </li>
+                                    <li class="current-page">
+                                        <a href="services.html"><i class="icon-user"></i><br />About</a>
+                                    </li>
+                                    <li>
+                                        <a href="contact.html"><i class="icon-envelope-alt"></i><br />Contact</a>
+                                    </li>
+                                </ul>
+                    </div>
+            </div>
+        </div>
+
+        <!-- Page Title -->
+        <div class="page-title">
+            <div class="container">
+                <div class="row">
+                    <div class="span12">
+                        <i class="icon-tasks page-title-icon"></i>
+                        <h2>About Me /</h2>
+                        <p>My Skills and Experience</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Services Full Width Text -->
+        <div class="services-full-width container">
+            <div class="row">
+                <div class="services-full-width-text span8" id="blog-content" ng-controller="Retrieve"><br>
+                    <div ng-repeat="post in posts">
+                        <a ng-href="post.id">{{post}}</a>
+                        <a href="#">Read More &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
